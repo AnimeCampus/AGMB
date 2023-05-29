@@ -420,8 +420,11 @@ def camillia_about_callback(update: Update, context: CallbackContext):
         )
     elif query.data == "camillia_back":
         first_name = update.effective_user.first_name
+        uptime = get_readable_time((time.time() - StartTime))
+        users = sql.num_users()
+        chats = sql.num_chats()
         query.message.edit_text(
-            PM_START_TEXT.format(escape_markdown(first_name), BOT_NAME),
+            PM_START_TEXT.format(escape_markdown(first_name), BOT_NAME, uptime, users, chats),
             reply_markup=InlineKeyboardMarkup(buttons),
             parse_mode=ParseMode.MARKDOWN,
             timeout=60,
