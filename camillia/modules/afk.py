@@ -39,7 +39,7 @@ def afk(update: Update, context: CallbackContext):
 
     sql.set_afk(update.effective_user.id, reason)
     fname = update.effective_user.first_name
-    afkimg = "https://graph.org/file/846d364810a42cb1c598b.jpg"
+    afkimg = "https://graph.org/file/66de69f2e9d42a9c4d5d5.jpg"
     try:
         update.effective_message.reply_photo(photo=afkimg, caption="{} is now away!{}".format(fname, notice))
     except BadRequest:
