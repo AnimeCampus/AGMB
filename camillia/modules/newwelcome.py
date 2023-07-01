@@ -16,19 +16,26 @@ from utils import temp
 BOT_USERNAME = "MissCamellia_Bot"
 LOG_CHANNEL = -1001596651023
 
-def circle(pfp, size=(215, 215), background_size=(1024, 500)):
+# Global dictionary to store the welcome settings for each chat
+welcome_settings = {}
+
+
+def circle(pfp, size=(215, 215)):
     pfp = pfp.resize(size, Image.ANTIALIAS).convert("RGBA")
-    bigsize = (background_size[0], background_size[1])
-    offset = ((background_size[0] - size[0]) // 2, (background_size[1] - size[1]) // 2)
+    bigsize = (pfp.size[0] * 3, pfp.size[1] * 3)
     mask = Image.new("L", bigsize, 0)
     draw = ImageDraw.Draw(mask)
-    draw.ellipse((offset[0], offset[1], offset[0] + size[0], offset[1] + size[1]), fill=255)
+    draw.ellipse((0, 0) + bigsize, fill=255)
     mask = mask.resize(pfp.size, Image.ANTIALIAS)
     mask = ImageChops.darker(mask, pfp.split()[-1])
     pfp.putalpha(mask)
     return pfp
 
+
 def draw_multiple_line_text(image, text, font, text_start_height):
+    """
+    From unutbu on [python PIL draw multiline text on image](https://stackoverflow.com/a/7698300/395857)
+    """
     draw = ImageDraw.Draw(image)
     image_width, image_height = image.size
     y_text = text_start_height
@@ -41,11 +48,15 @@ def draw_multiple_line_text(image, text, font, text_start_height):
         )
         y_text += line_height
 
+
 def welcomepic(pic, user, chat, user_id):
     background = Image.open("assets/bg.png")  # <- Background Image (Should be PNG)
     background = background.resize((1024, 500), Image.ANTIALIAS)
     pfp = Image.open(pic).convert("RGBA")
-    pfp = circle(pfp, size=(265, 265), background_size=(1024, 500))
+    pfp = circle(pfp)
+    pfp = pfp.resize(
+        (265, 265)
+    )  # Resizes the Profilepicture so it fits perfectly in the circle
     font = ImageFont.truetype(
         "assets/Calistoga-Regular.ttf", 37
     )  # <- Text Font of the Member Count. Change the text size for your preference
@@ -68,6 +79,7 @@ def welcomepic(pic, user, chat, user_id):
     )  # Saves the finished Image in the folder with the filename
     return welcome_image_path
 
+
 @pbot.on_chat_member_updated(filters.group)
 def member_has_joined(_, member: ChatMemberUpdated):
     if (
@@ -87,6 +99,10 @@ def member_has_joined(_, member: ChatMemberUpdated):
         return  # ignore bots
     else:
         chat_id = member.chat.id
+        welcome_enabled = welcome_settings.get(chat_id, True)
+        if not welcome_enabled:
+            return  # Welcome message is disabled for this chat
+
         if f"welcome-{chat_id}" in temp.MELCOW:
             try:
                 temp.MELCOW[f"welcome-{chat_id}"].delete()
@@ -120,3 +136,24 @@ def member_has_joined(_, member: ChatMemberUpdated):
         except Exception:
             pass
 
+
+@pbot.on_message(filters.command("dwelcome_on") & filters.user)
+def enable_welcome(_, message: Message):
+    chat_id = message.chat.id
+    user = message.from_user
+    if user_admin(_, user.id, chat_id):
+        welcome_settings[chat_id] = True
+        message.reply_text("New welcome message enabled for this chat.")
+    else:
+        message.reply_text("Sorry, only admins can enable the welcome message.")
+
+
+@pbot.on_message(filters.command("dwelcome_off") & filters.user)
+def disable_welcome(_, message: Message):
+    chat_id = message.chat.id
+    user = message.from_user
+    if user_admin(_, user.id, chat_id):
+        welcome_settings[chat_id] = False
+        message.reply_text("New welcome message disabled for this chat.")
+    else:
+        message.reply_text("Sorry, only admins can disable the welcome message.")
