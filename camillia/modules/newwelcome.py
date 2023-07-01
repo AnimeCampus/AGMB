@@ -8,7 +8,7 @@ from PIL import Image, ImageChops, ImageDraw, ImageFont
 from pyrogram import filters
 from pyrogram.types import ChatMemberUpdated, Message
 
-from camillia import DEV_USERS
+from camillia import DRAGONS
 from camillia import pbot
 from camillia.modules.helper_funcs.chat_status import user_admin
 from utils import temp
@@ -77,7 +77,7 @@ def member_has_joined(_, member: ChatMemberUpdated):
     ):
         return
     user = member.new_chat_member.user if member.new_chat_member else member.from_user
-    if user.id in SUDO:
+    if user.id in DRAGONS:
         _.send_message(
             member.chat.id,
             "**Global Admins Joined The Chat!**",
@@ -100,7 +100,7 @@ def member_has_joined(_, member: ChatMemberUpdated):
         user_id = user.id
         dc = user.dc_id
         try:
-            pic = app.download_media(
+            pic = pbot.download_media(
                 user.photo.big_file_id, file_name=f"pp{user_id}.png"
             )
         except AttributeError:
