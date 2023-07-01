@@ -11,7 +11,7 @@ from pyrogram.errors import (
 )
 from pyrogram.types import Message
 
-from Exon import db
+from Camellia import db
 
 LOGGER = getLogger(__name__)
 BANNED = {}
