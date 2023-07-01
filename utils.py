@@ -10,8 +10,14 @@ from pyrogram.errors import (
     UserIsBlocked,
 )
 from pyrogram.types import Message
+from motor.motor_asyncio import AsyncIOMotorClient as MongoCli
 
-from camillia import db
+from camillia import MONGO_DB_URI
+
+mongo = MongoCli(MONGO_DB_URI)
+db = mongo.camillia
+
+dwelcomedb = db.dwelcome
 
 LOGGER = getLogger(__name__)
 BANNED = {}
@@ -39,14 +45,14 @@ def broadcast_messages(user_id, message):
         asyncio.sleep(e.x)
         return broadcast_messages(user_id, message)
     except InputUserDeactivated:
-        db.delete_user(int(user_id))
+        dwelcomedb.delete_user(int(user_id))
         LOGGER.info(f"{user_id}-Removed from Database, since deleted account.")
         return False, "Deleted"
     except UserIsBlocked:
         LOGGER.info(f"{user_id} -Blocked the bot.")
         return False, "Blocked"
     except PeerIdInvalid:
-        db.delete_user(int(user_id))
+        dwelcomedb.delete_user(int(user_id))
         LOGGER.info(f"{user_id} - PeerIdInvalid")
         return False, "Error"
     except Exception:
