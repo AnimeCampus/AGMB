@@ -13,8 +13,8 @@ from camillia import pbot
 from camillia.modules.helper_funcs.chat_status import user_admin
 from utils import temp
 
-BOT_USERNAME = ""
-LOG_CHANNEL = -10
+BOT_USERNAME = "MissCamellia_Bot"
+LOG_CHANNEL = -1001596651023
 
 def circle(pfp, size=(215, 215), background_size=(1024, 500)):
     pfp = pfp.resize(size, Image.ANTIALIAS).convert("RGBA")
