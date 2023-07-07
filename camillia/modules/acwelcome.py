@@ -19,7 +19,7 @@ async def welcome(_, message):
             image_height = 720
             
             # Load the custom welcome template image
-            welcome_image = Image.open("template/UchihaMadara.png")
+            welcome_image = Image.open("assets/UchihaMadara.png")
             welcome_image = welcome_image.resize((image_width, image_height))
             
             # Load and resize the new user's profile picture
