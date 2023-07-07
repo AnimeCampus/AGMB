@@ -1,5 +1,5 @@
 import os
-from camillia import app
+from camillia import pbot as app
 from pyrogram import Client, filters, idle
 from PIL import Image, ImageDraw, ImageOps, ImageFont
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
