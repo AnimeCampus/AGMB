@@ -1,7 +1,7 @@
 import httpx, base64
 from pyrogram import filters
 
-from camillia import pgram as app
+from camillia import pbot as app
 
 
 @app.on_message(filters.command("upscale"))
