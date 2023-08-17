@@ -16,13 +16,13 @@ class Config(object):
     # Telegraph link of the image which will be shown at start command.
     START_IMG = "https://graph.org/file/846d364810a42cb1c598b.jpg"
 
-    SUPPORT_CHAT = "MissCamelliaSupport"  # Your Telegram support group chat username where your users will go and bother you
+    SUPPORT_CHAT = "waruserbot"  # Your Telegram support group chat username where your users will go and bother you
 
-    TOKEN = "5876546515:AAE0vVvCy6ucPjSc4oS0gECtmjAUmkP9tuo"  # Get bot token from @BotFather on Telegram
+    TOKEN = "1844045546:AAGKfDtV7bg04Ije-VinNvH47LR369BR_Xc"  # Get bot token from @BotFather on Telegram
 
     TIME_API_KEY = "S3J6EISOC17L"  # Get this value from https://timezonedb.com/api
 
-    OWNER_ID = 6198858059  # User id of your telegram account (Must be integer)
+    OWNER_ID = 1329105215  # User id of your telegram account (Must be integer)
 
     # Optional fields
     BL_CHATS = []  # List of groups that you want blacklisted.
