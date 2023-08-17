@@ -2,7 +2,7 @@ import requests
 import httpx
 from pyrogram import filters, Client, idle
 from pyrogram.types import Message
-from camillia import pgram as app
+from camillia import pbot as app
 
 
 # Dictionary to store the conversation history for each user
